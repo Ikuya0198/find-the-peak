@@ -171,6 +171,28 @@ const COUNTRIES = {
             }
         }
     },
+    philippines: {
+        name: { en: '🇵🇭 Philippines', ja: '🇵🇭 フィリピン' },
+        flag: '🇵🇭',
+        regions: {
+            elyu: {
+                name: { en: 'La Union (ELYU)', ja: 'ラウニオン (ELYU)' },
+                spots: [
+                    { id: 'san-juan', name: { en: 'San Juan', ja: 'サンファン' }, lat: 16.6697, lon: 120.3150, facing: 270 },
+                    { id: 'urbiztondo', name: { en: 'Urbiztondo', ja: 'ウルビストンド' }, lat: 16.6180, lon: 120.3170, facing: 270 },
+                    { id: 'bacnotan', name: { en: 'Bacnotan', ja: 'バクノタン' }, lat: 16.7320, lon: 120.3480, facing: 270 }
+                ]
+            },
+            siargao: {
+                name: { en: 'Siargao Island', ja: 'シャルガオ島' },
+                spots: [
+                    { id: 'cloud9', name: { en: 'Cloud 9', ja: 'クラウド9' }, lat: 9.8486, lon: 126.1631, facing: 90 },
+                    { id: 'stimpy', name: { en: "Stimpy's", ja: 'スティンピーズ' }, lat: 9.8450, lon: 126.1600, facing: 90 },
+                    { id: 'jacking-horse', name: { en: 'Jacking Horse', ja: 'ジャッキングホース' }, lat: 9.8520, lon: 126.1650, facing: 90 }
+                ]
+            }
+        }
+    },
     indonesia: {
         name: { en: '🇮🇩 Indonesia', ja: '🇮🇩 インドネシア' },
         flag: '🇮🇩',
@@ -604,37 +626,33 @@ async function fetchMarineData(lat, lon) {
 function renderSpotTabs() {
     const container = document.getElementById('spotTabs');
 
-    let html = '';
+    // Build dropdown options grouped by country and region
+    let optionsHtml = '';
     Object.entries(COUNTRIES).forEach(([countryId, country]) => {
-        html += `<div class="country-section">
-            <div class="country-label">${country.name[currentLang]}</div>
-            <div class="regions-wrap">`;
-
         Object.entries(country.regions).forEach(([regionId, region]) => {
-            html += `<div class="region-group">
-                <div class="region-label">${region.name[currentLang]}</div>
-                <div class="spots-wrap">`;
-
+            optionsHtml += `<optgroup label="${country.name[currentLang]} - ${region.name[currentLang]}">`;
             region.spots.forEach(spot => {
-                const isActive = spot.id === currentSpot.id;
-                html += `<button class="spot-tab ${isActive ? 'active' : ''}" data-spot-id="${spot.id}">
-                    ${spot.name[currentLang]}
-                </button>`;
+                const isSelected = spot.id === currentSpot.id;
+                optionsHtml += `<option value="${spot.id}" ${isSelected ? 'selected' : ''}>${spot.name[currentLang]}</option>`;
             });
-
-            html += `</div></div>`;
+            optionsHtml += `</optgroup>`;
         });
-
-        html += `</div></div>`;
     });
 
-    container.innerHTML = html;
+    container.innerHTML = `
+        <div class="spot-selector">
+            <div class="selector-icon">📍</div>
+            <select id="spotSelect" class="spot-dropdown">
+                ${optionsHtml}
+            </select>
+            <div class="selector-arrow">▼</div>
+        </div>
+        <div class="spot-count">${ALL_SPOTS.length} spots worldwide</div>
+    `;
 
-    container.querySelectorAll('.spot-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const spot = ALL_SPOTS.find(s => s.id === tab.dataset.spotId);
-            if (spot) selectSpot(spot);
-        });
+    document.getElementById('spotSelect').addEventListener('change', (e) => {
+        const spot = ALL_SPOTS.find(s => s.id === e.target.value);
+        if (spot) selectSpot(spot);
     });
 }
 

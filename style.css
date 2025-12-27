@@ -239,81 +239,72 @@ section h2 {
     margin-top: -10px;
 }
 
-/* Spot Selector */
-.country-section {
-    margin-bottom: 14px;
-    padding: 12px;
-    background: var(--bg-glass);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-}
-
-.country-label {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--warning);
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
+/* Spot Selector - Dropdown */
+.spot-selector {
     display: flex;
     align-items: center;
-    gap: 8px;
-}
-
-.regions-wrap {
-    display: flex;
-    flex-wrap: wrap;
     gap: 12px;
-}
-
-.region-group {
-    flex: 1;
-    min-width: 180px;
-}
-
-.region-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.spots-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.spot-tab {
-    padding: 8px 14px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--bg-glass);
-    backdrop-filter: var(--blur);
+    padding: 12px 20px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 153, 204, 0.08) 100%);
+    border: 2px solid var(--primary);
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text-secondary);
     transition: all 0.3s ease;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-.spot-tab:hover {
-    background: var(--bg-glass-hover);
-    border-color: var(--primary);
+.spot-selector:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 153, 204, 0.15) 100%);
+    box-shadow: 0 4px 25px rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.selector-icon {
+    font-size: 1.4rem;
+}
+
+.spot-dropdown {
+    flex: 1;
+    background: transparent;
+    border: none;
     color: var(--text);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
 }
 
-.spot-tab.active {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--bg-dark);
-    border-color: var(--primary);
+.spot-dropdown option,
+.spot-dropdown optgroup {
+    background: var(--bg-dark);
+    color: var(--text);
+    padding: 10px;
+}
+
+.spot-dropdown optgroup {
     font-weight: 700;
-    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-    transform: translateY(-2px);
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.selector-arrow {
+    font-size: 0.8rem;
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.spot-selector:hover .selector-arrow {
+    transform: translateY(2px);
+}
+
+.spot-count {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 10px;
 }
 
 /* Loading */
@@ -1110,6 +1101,106 @@ section h2 {
     font-weight: 600;
     color: var(--warning);
     text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+}
+
+/* Pay It Forward Section */
+.pay-forward-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+}
+
+.pay-forward-intro {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.8;
+}
+
+.charity-banners {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.charity-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 24px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: 280px;
+    max-width: 350px;
+}
+
+.charity-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+}
+
+.charity-banner.surfrider {
+    border-color: rgba(0, 150, 255, 0.4);
+    background: linear-gradient(135deg, rgba(0, 150, 255, 0.1) 0%, rgba(0, 100, 200, 0.05) 100%);
+}
+
+.charity-banner.surfrider:hover {
+    border-color: rgba(0, 150, 255, 0.7);
+    box-shadow: 0 8px 30px rgba(0, 150, 255, 0.3);
+}
+
+.charity-banner.surfers-healing {
+    border-color: rgba(255, 180, 0, 0.4);
+    background: linear-gradient(135deg, rgba(255, 180, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+}
+
+.charity-banner.surfers-healing:hover {
+    border-color: rgba(255, 180, 0, 0.7);
+    box-shadow: 0 8px 30px rgba(255, 180, 0, 0.3);
+}
+
+.charity-logo {
+    font-size: 2rem;
+}
+
+.charity-info {
+    flex: 1;
+}
+
+.charity-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.charity-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.charity-cta {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .charity-banners {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .charity-banner {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
