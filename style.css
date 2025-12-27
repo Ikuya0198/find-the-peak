@@ -99,6 +99,31 @@ body::after {
     position: relative;
 }
 
+.header-top {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.lang-toggle {
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.lang-toggle:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--primary);
+}
+
 .logo {
     font-size: 2.2rem;
     font-weight: 800;
@@ -123,18 +148,6 @@ body::after {
     letter-spacing: 1px;
 }
 
-.tagline {
-    font-size: 0.8rem;
-    color: var(--primary);
-    margin-top: 8px;
-    font-weight: 500;
-    padding: 6px 16px;
-    background: var(--bg-glass);
-    border-radius: 20px;
-    display: inline-block;
-    border: 1px solid var(--border-glow);
-}
-
 .last-update {
     font-size: 0.75rem;
     color: var(--text-muted);
@@ -142,9 +155,6 @@ body::after {
 }
 
 .refresh-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     background: var(--bg-glass);
     backdrop-filter: var(--blur);
     border: 1px solid var(--border);
@@ -218,20 +228,53 @@ section h2 {
 }
 
 /* Spot Selector */
-.spot-tabs {
+.country-section {
+    margin-bottom: 20px;
+}
+
+.country-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.regions-wrap {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
+}
+
+.region-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.region-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.spots-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .spot-tab {
-    padding: 12px 20px;
+    padding: 10px 16px;
     border: 1px solid var(--border);
-    border-radius: 30px;
+    border-radius: 20px;
     background: var(--bg-glass);
     backdrop-filter: var(--blur);
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-secondary);
     transition: all 0.3s ease;
@@ -249,13 +292,6 @@ section h2 {
     border-color: var(--primary);
     font-weight: 700;
     box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-}
-
-.spot-tab .region {
-    font-size: 0.7rem;
-    opacity: 0.7;
-    display: block;
-    margin-top: 2px;
 }
 
 /* Loading */
@@ -359,39 +395,37 @@ section h2 {
 /* Surf Rating */
 .surf-rating {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    padding: 24px;
+    gap: 16px;
+    padding: 30px;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 204, 0.05) 100%);
     border: 1px solid var(--border-glow);
     border-radius: var(--radius);
     margin-bottom: 20px;
+    text-align: center;
 }
 
-.rating-score {
-    font-size: 3.5rem;
-    filter: drop-shadow(0 0 15px currentColor);
+.rating-badge-large {
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 12px 40px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.rating-score.excellent { color: var(--success); }
-.rating-score.good { color: var(--primary); }
-.rating-score.fair { color: var(--warning); }
-.rating-score.poor { color: var(--danger); }
+.rating-badge-large.excellent { background: var(--success); color: var(--bg-dark); }
+.rating-badge-large.good { background: var(--primary); color: var(--bg-dark); }
+.rating-badge-large.fair { background: var(--warning); color: var(--bg-dark); }
+.rating-badge-large.poor { background: var(--danger); color: white; }
 
-.rating-info {
-    text-align: left;
-}
-
-.rating-label {
-    font-size: 1.6rem;
-    font-weight: 700;
-}
-
-.rating-desc {
-    font-size: 0.9rem;
+.rating-comment {
+    font-size: 1.1rem;
+    font-style: italic;
     color: var(--text-secondary);
-    margin-top: 4px;
+    max-width: 500px;
 }
 
 /* Advice Box */
@@ -428,6 +462,55 @@ section h2 {
     font-weight: 500;
 }
 
+/* Info Row (Sunrise/Sunset + Wetsuit) */
+.info-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 24px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.info-card.sun-card {
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.08) 0%, rgba(255, 107, 53, 0.05) 100%);
+    border-color: rgba(255, 204, 0, 0.2);
+}
+
+.info-card.wetsuit-card {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 153, 204, 0.05) 100%);
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
 /* Tide Section */
 .tide-section {
     margin-top: 20px;
@@ -435,17 +518,15 @@ section h2 {
     background: var(--bg-glass);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+    text-align: center;
 }
 
 .tide-header {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 12px;
     margin-bottom: 16px;
-}
-
-.tide-icon {
-    font-size: 1.8rem;
 }
 
 .tide-type {
@@ -455,7 +536,7 @@ section h2 {
 }
 
 .tide-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
 }
 
@@ -463,6 +544,7 @@ section h2 {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .tide-time {
