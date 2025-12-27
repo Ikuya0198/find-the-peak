@@ -1679,6 +1679,12 @@ section h2 {
     text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
 }
 
+.handwritten {
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.5rem !important;
+    font-weight: 600;
+}
+
 /* Pay It Forward Section */
 .pay-forward-section {
     margin-top: 30px;
@@ -1716,6 +1722,38 @@ section h2 {
     border-color: var(--primary);
     background: var(--bg-glass-hover);
     color: var(--primary);
+}
+
+.donate-description {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 12px auto 30px;
+    line-height: 1.6;
+}
+
+.charity-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.charity-title {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.charity-description {
+    text-align: center;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 16px auto 0;
+    line-height: 1.6;
 }
 
 .charity-banners {

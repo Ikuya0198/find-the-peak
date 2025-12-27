@@ -84,7 +84,10 @@ const translations = {
         introText: 'Free surf forecast for friendly surfers worldwide. Real-time wave data & prediction algorithm. Check the conditions and find your peak!',
         // Footer
         payForward: 'I will never take revenue from this site. If you catch a good wave, Pay it Forward!',
-        coffeeText: 'Buy the site owner a morning coffee!'
+        coffeeText: 'Buy the site owner a morning coffee!',
+        donateDescription: 'This site is completely non-profit, but there are some operating costs. If the forecast helps you catch a good wave, your support means a lot! (But no guarantees if it\'s wrong... haha)',
+        charityTitle: 'Other recommended Pay it Forward options',
+        charityDescription: 'I personally support these organizations. May everyone enjoy the best surfing in a sustainable, beautiful environment with an amazing community...'
     },
     ja: {
         currentConditions: '現在のコンディション',
@@ -161,7 +164,10 @@ const translations = {
         introText: '世界中のフレンドリーサーファーのための無料波予報。リアルタイム波データ＆予測アルゴリズム。コンディションをチェックしてピークを見つけよう！',
         // Footer
         payForward: 'このサイトから収益は一切いただきません。いい波に乗れたら、Pay it Forward！',
-        coffeeText: '運営者に朝のコーヒーをお願いね！'
+        coffeeText: '運営者に朝のコーヒーをお願いね！',
+        donateDescription: '完全に非収益ですが、運営コストが若干かかるので予報が当たった時はサポートしてくれると助かります。でも外れても知らんからな！このタブから開発者に寄付ができるよ',
+        charityTitle: 'その他おすすめのPay it Forward先',
+        charityDescription: '個人的に活動を応援します。全ての人にサステイナブルで美しい環境で最高のサーフィンを素晴らしいコミュニティと共にできますように...'
     }
 };
 
@@ -1105,6 +1111,9 @@ function toggleLanguage() {
     document.getElementById('introText').textContent = t('introText');
     document.getElementById('payForwardText').textContent = t('payForward');
     document.getElementById('coffeeText').textContent = t('coffeeText');
+    document.getElementById('donateDescription').textContent = t('donateDescription');
+    document.getElementById('charityTitle').textContent = t('charityTitle');
+    document.getElementById('charityDescription').textContent = t('charityDescription');
     renderSpotTabs();
     if (forecastData) {
         renderCurrentConditions(forecastData);
