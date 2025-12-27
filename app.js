@@ -927,8 +927,6 @@ function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'ja' : 'en';
     document.getElementById('langToggle').textContent = currentLang === 'en' ? '日本語' : 'English';
     document.getElementById('introText').textContent = t('introText');
-    document.getElementById('selectSpotTitle').textContent = t('selectSpot');
-    document.getElementById('selectSpotDesc').textContent = t('selectDesc');
     renderSpotTabs();
     if (forecastData) {
         renderCurrentConditions(forecastData);
