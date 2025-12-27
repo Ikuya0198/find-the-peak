@@ -16,6 +16,7 @@ const translations = {
         selectSpot: 'Select Surf Spot',
         selectDesc: 'Choose from 14 popular spots in Japan. More countries coming soon!',
         waveHeight: 'Wave',
+        waveNote: '* Beach breaks are typically 20-30% bigger than shown',
         period: 'Period',
         waveDir: 'Direction',
         swell: 'Swell',
@@ -68,7 +69,10 @@ const translations = {
         // Regions
         japan: 'Japan',
         // Intro
-        introText: 'Free surf forecast for friendly surfers worldwide. Real-time wave data powered by Open-Meteo Marine API. Check the conditions and find your peak!'
+        introText: 'Free surf forecast for friendly surfers worldwide. Real-time wave data & prediction algorithm. Check the conditions and find your peak!',
+        // Footer
+        payForward: 'I will never take revenue from this site. If you catch a good wave, Pay it Forward!',
+        coffeeText: 'Buy the site owner a morning coffee!'
     },
     ja: {
         currentConditions: '現在のコンディション',
@@ -77,6 +81,7 @@ const translations = {
         selectSpot: 'サーフスポットを選択',
         selectDesc: '日本の人気14スポットから選んでください。他の国も近日追加予定！',
         waveHeight: '波高',
+        waveNote: '※ビーチブレイクでは実際の波は表示より2〜3割大きくなります',
         period: '周期',
         waveDir: '波向き',
         swell: 'うねり',
@@ -129,7 +134,10 @@ const translations = {
         // Regions
         japan: '日本',
         // Intro
-        introText: '世界中のフレンドリーサーファーのための無料波予報。Open-Meteo Marine APIによるリアルタイム波データ。コンディションをチェックしてピークを見つけよう！'
+        introText: '世界中のフレンドリーサーファーのための無料波予報。リアルタイム波データ＆予測アルゴリズム。コンディションをチェックしてピークを見つけよう！',
+        // Footer
+        payForward: 'このサイトから収益は一切いただきません。いい波に乗れたら、Pay it Forward！',
+        coffeeText: '運営者に朝のコーヒーをお願いね！'
     }
 };
 
@@ -707,79 +715,89 @@ function renderCurrentConditions(data) {
 
     const funnyComment = generateFunnyComment(waveHeight, wavePeriod, windCond, score, currentLang);
 
-    container.innerHTML = `
-        <h2>${t('currentConditions')} - ${currentSpot.name[currentLang]}</h2>
+    // Determine wind card class
+    const isOnshore = windCond.type === 'onshore' || windCond.type === 'strong-onshore';
+    const windCardClass = isOnshore ? 'wind-card onshore-card' : 'wind-card';
 
-        <div class="surf-rating fade-in">
-            <div class="rating-badge-large ${rating.class}">${t(rating.labelKey)}</div>
-            <div class="current-score">${score}<span class="score-unit">pt</span></div>
-            <div class="rating-comment">"${funnyComment}"</div>
+    container.innerHTML = `
+        <h2>${t('currentConditions')}</h2>
+
+        <!-- Header: Spot | Rating | Score | Comment -->
+        <div class="condition-header fade-in">
+            <div class="condition-spot-name">${currentSpot.name[currentLang]}</div>
+            <div class="condition-rating-wrap">
+                <div class="rating-badge-compact ${rating.class}">${t(rating.labelKey)}</div>
+                <div class="condition-score">${score}<span class="score-unit">pt</span></div>
+            </div>
+            <div class="condition-comment">"${funnyComment}"</div>
         </div>
 
-        <div class="condition-grid fade-in">
-            <div class="condition-card">
-                <div class="value">${waveHeight.toFixed(1)}<span class="unit">m</span></div>
-                <div class="label">${t('waveHeight')}</div>
+        <!-- Primary: Wave Height + Wind -->
+        <div class="primary-stats fade-in">
+            <div class="primary-stat-card wave-card">
+                <div class="primary-stat-icon">🌊</div>
+                <div class="primary-stat-info">
+                    <div class="primary-stat-label">${t('waveHeight')}</div>
+                    <div class="primary-stat-value">${waveHeight.toFixed(1)}<span class="unit">m</span></div>
+                    <div class="primary-stat-sub">${wavePeriod.toFixed(0)}s ${getWindArrow(waveDirection || 0)} ${getDirectionText(waveDirection || 0)}</div>
+                </div>
             </div>
-            <div class="condition-card">
-                <div class="value">${wavePeriod.toFixed(0)}<span class="unit">s</span></div>
-                <div class="label">${t('period')}</div>
+            <div class="primary-stat-card ${windCardClass}">
+                <div class="primary-stat-icon">💨</div>
+                <div class="primary-stat-info">
+                    <div class="primary-stat-label">${t('wind')}</div>
+                    <div class="primary-stat-value">${windSpeed.toFixed(0)}<span class="unit">m/s</span></div>
+                    <div class="primary-stat-sub ${windCond.class}">${t(windCond.labelKey)} ${getWindArrow(windDirection)}</div>
+                </div>
             </div>
-            <div class="condition-card">
-                <div class="value"><span class="direction-arrow">${getWindArrow(waveDirection || 0)}</span>${getDirectionText(waveDirection || 0)}</div>
-                <div class="label">${t('waveDir')}</div>
-            </div>
-            <div class="condition-card">
-                <div class="value">${swellHeight.toFixed(1)}<span class="unit">m</span></div>
-                <div class="label">${t('swell')}</div>
-            </div>
-            <div class="condition-card">
-                <div class="value ${windCond.class}">${windSpeed.toFixed(0)}<span class="unit">m/s</span></div>
-                <div class="label">${t(windCond.labelKey)}</div>
-            </div>
-            <div class="condition-card">
-                <div class="value">${temp.toFixed(0)}<span class="unit">°C</span></div>
-                <div class="label">${t('airTemp')}</div>
+        </div>
+        <div class="wave-note fade-in">${t('waveNote')}</div>
+
+        <!-- Secondary: Air Temp, Water Temp, Swell, Wetsuit -->
+        <div class="secondary-stats fade-in">
+            <div class="secondary-stat">
+                <div class="secondary-stat-value">${temp.toFixed(0)}<span class="unit">°C</span></div>
+                <div class="secondary-stat-label">${t('airTemp')}</div>
             </div>
             ${seaTemp !== null ? `
-            <div class="condition-card sea-temp">
-                <div class="value">${seaTemp.toFixed(1)}<span class="unit">°C</span></div>
-                <div class="label">${t('waterTemp')}</div>
+            <div class="secondary-stat">
+                <div class="secondary-stat-value">${seaTemp.toFixed(1)}<span class="unit">°C</span></div>
+                <div class="secondary-stat-label">${t('waterTemp')}</div>
             </div>` : ''}
-        </div>
-
-        <div class="info-row fade-in">
-            <div class="info-card sun-card">
-                <div class="info-item">
-                    <span class="info-label">${t('sunrise')}</span>
-                    <span class="info-value">${formatSunTime(sunrise)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">${t('sunset')}</span>
-                    <span class="info-value">${formatSunTime(sunset)}</span>
-                </div>
+            <div class="secondary-stat">
+                <div class="secondary-stat-value">${swellHeight.toFixed(1)}<span class="unit">m</span></div>
+                <div class="secondary-stat-label">${t('swell')}</div>
             </div>
             ${wetsuit ? `
-            <div class="info-card wetsuit-card">
-                <span class="info-label">${t('wetsuit')}</span>
-                <span class="info-value">${t(wetsuit.suitKey)}</span>
+            <div class="secondary-stat wetsuit-stat">
+                <div class="secondary-stat-value">${t(wetsuit.suitKey)}</div>
+                <div class="secondary-stat-label">${t('wetsuit')}</div>
             </div>` : ''}
         </div>
 
-        <div class="tide-section fade-in">
-            <div class="tide-header">
-                <span class="tide-type">${t(tideInfo.tideType.labelKey)}</span>
-                <span class="tide-desc">${t(tideInfo.tideType.descKey)}</span>
+        <!-- Tertiary: Sun + Tide -->
+        <div class="tertiary-info fade-in">
+            <div class="sun-info-compact">
+                <div class="sun-info-item">
+                    <span class="sun-info-icon">🌅</span>
+                    <span class="sun-info-time">${formatSunTime(sunrise)}</span>
+                </div>
+                <div class="sun-info-item">
+                    <span class="sun-info-icon">🌇</span>
+                    <span class="sun-info-time">${formatSunTime(sunset)}</span>
+                </div>
             </div>
-            <div class="tide-times">
-                ${tideInfo.times.map(ti => `
-                    <div class="tide-time ${ti.type}">
-                        <span class="tide-label">${ti.type === 'high' ? t('highTide') : t('lowTide')}</span>
-                        <span class="tide-value">${ti.timeStr}</span>
-                    </div>
-                `).join('')}
+            <div class="tide-info-compact">
+                <span class="tide-type-badge">${t(tideInfo.tideType.labelKey)}</span>
+                <div class="tide-times-compact">
+                    ${tideInfo.times.map(ti => `
+                        <div class="tide-time-compact ${ti.type}">
+                            <span class="tide-icon">${ti.type === 'high' ? '▲' : '▼'}</span>
+                            <span class="tide-val">${ti.timeStr}</span>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
-            <div class="tide-note">${t('tideNote')}</div>
         </div>
     `;
 }
@@ -862,20 +880,33 @@ function renderTomorrowForecast(data) {
             `).join('')}
         </div>
 
-        <div class="hourly-tomorrow fade-in">
+        <div class="hourly-timeline fade-in">
             <h3>${t('hourlyDetail')}</h3>
-            <div class="hourly-scroll">
-                <div class="hourly-grid">
-                    ${allHours.map(h => `
-                        <div class="hour-card ${h.hour === bestHour.hour ? 'best' : ''}">
-                            <div class="hour">${h.label}</div>
-                            <div class="wave">${h.waveHeight.toFixed(1)}m</div>
-                            <div class="hour-score">${h.score}pt</div>
-                            <div class="wind ${h.windCond.class}">${t(h.windCond.labelKey).slice(0, 3)}</div>
-                            <div class="rating-dot ${h.rating.class}"></div>
-                        </div>
-                    `).join('')}
+            <div class="timeline-container">
+                <div class="timeline-bars">
+                    ${allHours.map(h => {
+                        const barHeight = Math.max(15, (h.score / 100) * 100);
+                        const isBest = h.hour === bestHour.hour;
+                        return `
+                            <div class="timeline-bar" data-tooltip="${h.label} | ${h.waveHeight.toFixed(1)}m | ${h.score}pt | ${t(h.windCond.labelKey)}">
+                                <div class="bar-fill ${h.rating.class} ${isBest ? 'best-hour' : ''}" style="height: ${barHeight}%"></div>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
+                <div class="timeline-labels">
+                    <span>5:00</span>
+                    <span>9:00</span>
+                    <span>12:00</span>
+                    <span>15:00</span>
+                    <span>18:00</span>
+                </div>
+            </div>
+            <div class="timeline-legend">
+                <div class="legend-item"><div class="legend-dot excellent"></div>${t('excellent')}</div>
+                <div class="legend-item"><div class="legend-dot good"></div>${t('good')}</div>
+                <div class="legend-item"><div class="legend-dot fair"></div>${t('fair')}</div>
+                <div class="legend-item"><div class="legend-dot poor"></div>${t('poor')}</div>
             </div>
         </div>
     `;
@@ -949,6 +980,8 @@ function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'ja' : 'en';
     document.getElementById('langToggle').textContent = currentLang === 'en' ? '日本語' : 'English';
     document.getElementById('introText').textContent = t('introText');
+    document.getElementById('payForwardText').textContent = t('payForward');
+    document.getElementById('coffeeText').textContent = t('coffeeText');
     renderSpotTabs();
     if (forecastData) {
         renderCurrentConditions(forecastData);
