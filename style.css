@@ -245,45 +245,50 @@ section h2 {
     text-align: center;
 }
 
-/* Spot Selector - Dropdown */
+/* Spot Selector - Two Dropdowns */
+.spot-selector-wrap {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .spot-selector {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 24px;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 153, 204, 0.08) 100%);
-    border: 2px solid var(--primary);
-    border-radius: 30px;
+    padding: 12px 20px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
-    max-width: 100%;
-    width: fit-content;
-    margin: 0 auto;
 }
 
 .spot-selector:hover {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 153, 204, 0.15) 100%);
-    box-shadow: 0 4px 25px rgba(0, 212, 255, 0.3);
-    transform: translateY(-2px);
+    background: var(--bg-glass-hover);
+    border-color: var(--primary);
 }
 
-.selector-icon {
-    font-size: 1.3rem;
-    flex-shrink: 0;
+.spot-selector.country-select {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 204, 0.05) 100%);
 }
 
 .spot-dropdown {
-    flex: 1;
     background: transparent;
     border: none;
     color: var(--text);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
     outline: none;
-    min-width: 200px;
+    padding-right: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
 }
 
 .spot-dropdown option,
@@ -299,37 +304,28 @@ section h2 {
     font-size: 0.85rem;
 }
 
-.selector-arrow {
-    font-size: 0.8rem;
-    color: var(--primary);
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-}
-
-.spot-selector:hover .selector-arrow {
-    transform: translateY(2px);
-}
-
 .spot-count {
     text-align: center;
     font-size: 0.75rem;
     color: var(--text-muted);
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 @media (max-width: 480px) {
-    .spot-selector {
-        padding: 12px 16px;
+    .spot-selector-wrap {
+        flex-direction: column;
         gap: 8px;
+    }
+
+    .spot-selector {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 16px;
     }
 
     .spot-dropdown {
         font-size: 0.9rem;
-        min-width: 150px;
-    }
-
-    .selector-icon {
-        font-size: 1.1rem;
+        text-align: center;
     }
 }
 
@@ -1144,139 +1140,48 @@ section h2 {
     line-height: 1.8;
 }
 
-.charity-banners {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    justify-content: center;
-}
-
-.charity-banner {
+.charity-links {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 20px 16px;
-    background: var(--bg-glass);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    text-align: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-.charity-banner:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
-}
-
-.charity-banner.support-site {
-    border-color: rgba(255, 107, 53, 0.4);
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 80, 30, 0.08) 100%);
-}
-
-.charity-banner.support-site:hover {
-    border-color: rgba(255, 107, 53, 0.7);
-    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
-}
-
-.charity-banner.surfrider {
-    border-color: rgba(0, 150, 255, 0.4);
-    background: linear-gradient(135deg, rgba(0, 150, 255, 0.1) 0%, rgba(0, 100, 200, 0.05) 100%);
-}
-
-.charity-banner.surfrider:hover {
-    border-color: rgba(0, 150, 255, 0.7);
-    box-shadow: 0 8px 30px rgba(0, 150, 255, 0.3);
-}
-
-.charity-banner.surfers-healing {
-    border-color: rgba(255, 180, 0, 0.4);
-    background: linear-gradient(135deg, rgba(255, 180, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
-}
-
-.charity-banner.surfers-healing:hover {
-    border-color: rgba(255, 180, 0, 0.7);
-    box-shadow: 0 8px 30px rgba(255, 180, 0, 0.3);
-}
-
-.charity-logo {
-    font-size: 2.2rem;
-}
-
-.charity-logo-img {
-    height: 40px;
-    width: auto;
-    max-width: 120px;
-    object-fit: contain;
-    filter: brightness(1.1);
-}
-
-.charity-info {
-    flex: 1;
-}
-
-.charity-name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.charity-desc {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 4px;
-    line-height: 1.3;
-}
-
-.charity-cta {
-    font-size: 0.8rem;
-    font-weight: 600;
+.charity-link {
     color: var(--primary);
-    white-space: nowrap;
-    padding: 6px 16px;
-    border: 1px solid var(--primary);
-    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
-.charity-banner:hover .charity-cta {
-    background: var(--primary);
-    color: var(--bg-dark);
+.charity-link:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
 }
 
-.charity-banner.support-site .charity-cta {
-    color: var(--accent);
-    border-color: var(--accent);
+.charity-divider {
+    color: var(--text-muted);
+    font-size: 0.8rem;
 }
 
-.charity-banner.support-site:hover .charity-cta {
-    background: var(--accent);
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .charity-banners {
-        grid-template-columns: 1fr;
+@media (max-width: 480px) {
+    .charity-links {
         gap: 10px;
     }
 
-    .charity-banner {
-        flex-direction: row;
-        text-align: left;
-        padding: 14px 18px;
+    .charity-link {
+        font-size: 0.8rem;
     }
 
-    .charity-logo {
-        font-size: 1.8rem;
+    .charity-divider {
+        display: none;
     }
 
-    .charity-logo-img {
-        height: 30px;
-    }
-
-    .charity-info {
-        flex: 1;
+    .charity-links {
+        flex-direction: column;
+        gap: 8px;
     }
 }
 

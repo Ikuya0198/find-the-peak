@@ -626,30 +626,52 @@ async function fetchMarineData(lat, lon) {
 function renderSpotTabs() {
     const container = document.getElementById('spotTabs');
 
-    // Build dropdown options grouped by country and region
-    let optionsHtml = '';
+    // Build country options
+    let countryOptions = '';
     Object.entries(COUNTRIES).forEach(([countryId, country]) => {
-        Object.entries(country.regions).forEach(([regionId, region]) => {
-            optionsHtml += `<optgroup label="${country.name[currentLang]} - ${region.name[currentLang]}">`;
-            region.spots.forEach(spot => {
-                const isSelected = spot.id === currentSpot.id;
-                optionsHtml += `<option value="${spot.id}" ${isSelected ? 'selected' : ''}>${spot.name[currentLang]}</option>`;
-            });
-            optionsHtml += `</optgroup>`;
+        const isSelected = countryId === currentSpot.countryId;
+        countryOptions += `<option value="${countryId}" ${isSelected ? 'selected' : ''}>${country.name[currentLang]}</option>`;
+    });
+
+    // Build spot options for current country
+    const currentCountry = COUNTRIES[currentSpot.countryId];
+    let spotOptions = '';
+    Object.entries(currentCountry.regions).forEach(([regionId, region]) => {
+        spotOptions += `<optgroup label="${region.name[currentLang]}">`;
+        region.spots.forEach(spot => {
+            const isSelected = spot.id === currentSpot.id;
+            spotOptions += `<option value="${spot.id}" ${isSelected ? 'selected' : ''}>${spot.name[currentLang]}</option>`;
         });
+        spotOptions += `</optgroup>`;
     });
 
     container.innerHTML = `
-        <div class="spot-selector">
-            <div class="selector-icon">📍</div>
-            <select id="spotSelect" class="spot-dropdown">
-                ${optionsHtml}
-            </select>
-            <div class="selector-arrow">▼</div>
+        <div class="spot-selector-wrap">
+            <div class="spot-selector country-select">
+                <select id="countrySelect" class="spot-dropdown">
+                    ${countryOptions}
+                </select>
+            </div>
+            <div class="spot-selector spot-select">
+                <select id="spotSelect" class="spot-dropdown">
+                    ${spotOptions}
+                </select>
+            </div>
         </div>
         <div class="spot-count">${ALL_SPOTS.length} spots worldwide</div>
     `;
 
+    // Country change handler
+    document.getElementById('countrySelect').addEventListener('change', (e) => {
+        const countryId = e.target.value;
+        const country = COUNTRIES[countryId];
+        const firstRegion = Object.values(country.regions)[0];
+        const firstSpot = firstRegion.spots[0];
+        const spot = ALL_SPOTS.find(s => s.id === firstSpot.id);
+        if (spot) selectSpot(spot);
+    });
+
+    // Spot change handler
     document.getElementById('spotSelect').addEventListener('change', (e) => {
         const spot = ALL_SPOTS.find(s => s.id === e.target.value);
         if (spot) selectSpot(spot);
