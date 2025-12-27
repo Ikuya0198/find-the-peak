@@ -1683,58 +1683,82 @@ section h2 {
     font-weight: 600;
 }
 
-/* Community Section */
-.community-section {
-    text-align: center;
-    margin-top: 30px;
-    padding: 24px;
-    background: linear-gradient(135deg, rgba(88, 101, 242, 0.15) 0%, rgba(88, 101, 242, 0.05) 100%);
-    border: 1px solid rgba(88, 101, 242, 0.3);
-    border-radius: var(--radius);
+/* Community Pop Section (above footer) */
+.community-pop {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-.community-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 8px;
-}
-
-.community-description {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-    line-height: 1.5;
-}
-
-.discord-btn {
-    display: inline-flex;
+.community-pop-inner {
+    display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: #5865F2;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 136, 0.05) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 50px;
 }
 
-.discord-btn:hover {
-    background: #4752C4;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-}
-
-.discord-icon {
+.community-pop-emoji {
+    font-size: 2rem;
     flex-shrink: 0;
 }
 
-.community-beta {
-    font-size: 0.7rem;
+.community-pop-content {
+    flex: 1;
+}
+
+.community-pop-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.community-pop-desc {
+    font-size: 0.75rem;
     color: var(--text-muted);
-    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.discord-btn-pop {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
+    color: var(--bg);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.discord-btn-pop:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.beta-tag {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .community-pop-inner {
+        flex-direction: column;
+        text-align: center;
+        border-radius: var(--radius);
+        padding: 20px;
+    }
+    .community-pop-content {
+        margin-bottom: 12px;
+    }
 }
 
 /* Pay It Forward Section */
@@ -1778,24 +1802,28 @@ section h2 {
 
 .donate-banner {
     text-align: center;
-    padding: 20px;
-    background: var(--bg-glass);
-    border: 1px solid var(--border);
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: none;
     border-radius: var(--radius-sm);
-    margin-bottom: 24px;
+    margin: 0 auto 20px;
+    max-width: 400px;
 }
 
 .donate-banner .coffee-link {
     display: inline-block;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding: 8px 16px;
 }
 
 .donate-description {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
-    max-width: 400px;
+    max-width: 350px;
     margin: 0 auto;
-    line-height: 1.5;
+    line-height: 1.4;
+    opacity: 0.8;
 }
 
 .charity-section {
