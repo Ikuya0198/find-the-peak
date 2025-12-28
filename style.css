@@ -1948,11 +1948,11 @@ section h2 {
 
 .donate-description {
     font-size: 0.7rem;
-    color: #ffffff;
+    color: #ffffff !important;
     max-width: 350px;
     margin: 0 auto;
     line-height: 1.4;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .charity-section {
