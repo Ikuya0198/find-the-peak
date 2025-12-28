@@ -1436,6 +1436,7 @@ section h2 {
     box-shadow: 0 0 10px currentColor;
 }
 
+.rating-dot.epic,
 .rating-dot.excellent { background: var(--success); color: var(--success); }
 .rating-dot.good { background: var(--primary); color: var(--primary); }
 .rating-dot.fair { background: var(--warning); color: var(--warning); }

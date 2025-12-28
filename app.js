@@ -921,9 +921,20 @@ function renderSpotTabs() {
     });
 }
 
+function formatDateShort(date, lang) {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const weekdays = lang === 'ja'
+        ? ['日', '月', '火', '水', '木', '金', '土']
+        : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const weekday = weekdays[date.getDay()];
+    return lang === 'ja' ? `${month}/${day}(${weekday})` : `${month}/${day} (${weekday})`;
+}
+
 function renderCurrentConditions(data) {
     const container = document.getElementById('currentConditions');
     const now = new Date();
+    const todayDateStr = formatDateShort(now, currentLang);
     const hourIndex = now.getHours();
 
     const hourly = data.marine.hourly;
@@ -958,7 +969,7 @@ function renderCurrentConditions(data) {
     const windCardClass = isOnshore ? 'wind-card onshore-card' : 'wind-card';
 
     container.innerHTML = `
-        <h2>${t('currentConditions')}</h2>
+        <h2>${t('currentConditions')} - ${todayDateStr}</h2>
 
         <!-- Header: Spot | Rating | Score | Comment -->
         <div class="condition-header fade-in">
@@ -967,7 +978,7 @@ function renderCurrentConditions(data) {
                 <div class="rating-badge-compact ${rating.class}">${t(rating.labelKey)}</div>
                 <div class="condition-score">${score}<span class="score-unit">pt</span></div>
             </div>
-            <div class="condition-comment">"${funnyComment}"</div>
+            <div class="condition-comment">${funnyComment}</div>
         </div>
 
         <!-- Primary: Wave Height + Wind + Weather -->
@@ -1137,6 +1148,7 @@ function renderTomorrowForecast(data) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    const tomorrowDateStr = formatDateShort(tomorrow, currentLang);
 
     const allHours = [];
     for (let hour = 5; hour <= 18; hour++) {
@@ -1205,7 +1217,7 @@ function renderTomorrowForecast(data) {
     }).filter(Boolean);
 
     container.innerHTML = `
-        <h2>${t('tomorrowForecast')} - ${currentSpot.name[currentLang]}</h2>
+        <h2>${t('tomorrowForecast')} - ${tomorrowDateStr}</h2>
 
         <div class="best-time-banner fade-in">
             <div class="best-time-info">
