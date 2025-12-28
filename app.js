@@ -170,7 +170,7 @@ const translations = {
         coffeeText: '運営者に朝のコーヒーをお願いね！',
         donateDescription: '完全に非収益ですが、運営コストが若干かかるので予報が当たった時はサポートしてくれると助かります。でも外れても知らんからな！このタブから開発者に寄付ができるよ',
         charityTitle: 'その他おすすめのPay it Forward先',
-        charityDescription: '個人的に活動を応援します。全ての人にサステイナブルで美しい環境で最高のサーフィンを素晴らしいコミュニティと共にできますように...',
+        charityDescription: 'I personally support these organizations. May everyone enjoy the best surfing in a sustainable, beautiful environment with an amazing community...',
         communityTitle: 'コミュニティに参加',
         communityDescription: 'サーファー仲間とつながろう！トリップ募集、バディ探し、ローカル情報など。',
         discordBtnText: 'Discordサーバーに参加'
@@ -637,29 +637,60 @@ function formatSunTime(isoString) {
 // ========================================
 function calculateWaveScore(waveHeight, wavePeriod, waveDirection, spotFacing) {
     let score = 0;
-    if (waveHeight >= 0.5 && waveHeight <= 2.0) {
-        score += (waveHeight >= 0.8 && waveHeight <= 1.5) ? 40 : 25;
-    } else if (waveHeight > 2.0 && waveHeight <= 3.0) {
-        score += 15;
-    } else if (waveHeight > 0.3) {
-        score += 10;
+
+    // Wave height is PRIMARY factor (0-50 points)
+    // Stricter scoring - small waves = low score
+    if (waveHeight < 0.3) {
+        score += 0;  // Flat - not surfable
+    } else if (waveHeight < 0.5) {
+        score += 10; // Barely surfable, longboard only
+    } else if (waveHeight < 0.8) {
+        score += 25; // Small but fun
+    } else if (waveHeight < 1.2) {
+        score += 40; // Good size
+    } else if (waveHeight < 1.8) {
+        score += 50; // Ideal
+    } else if (waveHeight < 2.5) {
+        score += 40; // Getting big
+    } else if (waveHeight < 3.5) {
+        score += 25; // Expert only
+    } else {
+        score += 10; // Dangerous
     }
 
-    if (wavePeriod >= 10) score += 30;
-    else if (wavePeriod >= 8) score += 25;
-    else if (wavePeriod >= 6) score += 15;
-    else score += 5;
+    // Period bonus (0-25 points) - only significant if waves exist
+    const periodMultiplier = waveHeight >= 0.3 ? 1 : 0.3;
+    if (wavePeriod >= 12) score += 25 * periodMultiplier;
+    else if (wavePeriod >= 10) score += 20 * periodMultiplier;
+    else if (wavePeriod >= 8) score += 15 * periodMultiplier;
+    else if (wavePeriod >= 6) score += 10 * periodMultiplier;
+    else score += 5 * periodMultiplier;
 
+    // Direction bonus (0-25 points) - only significant if waves exist
     if (waveDirection !== null && !isNaN(waveDirection)) {
         const angleDiff = Math.abs(waveDirection - spotFacing);
         const normalizedDiff = angleDiff > 180 ? 360 - angleDiff : angleDiff;
-        if (normalizedDiff <= 30) score += 30;
-        else if (normalizedDiff <= 60) score += 20;
-        else if (normalizedDiff <= 90) score += 10;
-    } else {
-        score += 15;
+        const dirMultiplier = waveHeight >= 0.3 ? 1 : 0.3;
+        if (normalizedDiff <= 30) score += 25 * dirMultiplier;
+        else if (normalizedDiff <= 60) score += 18 * dirMultiplier;
+        else if (normalizedDiff <= 90) score += 10 * dirMultiplier;
+        else score += 5 * dirMultiplier;
     }
-    return Math.min(100, score);
+
+    return Math.min(100, Math.round(score));
+}
+
+// Wind adjustment to score
+function adjustScoreForWind(baseScore, windCond) {
+    let adjustment = 0;
+    switch (windCond.type) {
+        case 'offshore': adjustment = 10; break;
+        case 'calm': adjustment = 5; break;
+        case 'cross': adjustment = 0; break;
+        case 'onshore': adjustment = -10; break;
+        case 'strong-onshore': adjustment = -20; break;
+    }
+    return Math.max(0, Math.min(100, baseScore + adjustment));
 }
 
 function getWindCondition(windSpeed, windDirection, spotFacing) {
@@ -831,9 +862,10 @@ function renderCurrentConditions(data) {
     const weatherCode = weather.weather_code?.[hourIndex] || 0;
     const weatherInfo = getWeatherInfo(weatherCode);
 
-    const score = calculateWaveScore(waveHeight, wavePeriod, waveDirection, currentSpot.facing);
-    const rating = getRating(score);
     const windCond = getWindCondition(windSpeed, windDirection, currentSpot.facing);
+    const baseScore = calculateWaveScore(waveHeight, wavePeriod, waveDirection, currentSpot.facing);
+    const score = adjustScoreForWind(baseScore, windCond);
+    const rating = getRating(score);
     const tideInfo = calculateTideTimes(now, currentSpot.regionId);
 
     const funnyComment = generateFunnyComment(waveHeight, wavePeriod, windCond, score, currentLang);
@@ -950,9 +982,10 @@ function renderTomorrowForecast(data) {
         const windSpeed = weather.wind_speed_10m[index] || 0;
         const windDirection = weather.wind_direction_10m[index] || 0;
 
-        const score = calculateWaveScore(waveHeight, wavePeriod, waveDirection, currentSpot.facing);
-        const rating = getRating(score);
         const windCond = getWindCondition(windSpeed, windDirection, currentSpot.facing);
+        const baseScore = calculateWaveScore(waveHeight, wavePeriod, waveDirection, currentSpot.facing);
+        const score = adjustScoreForWind(baseScore, windCond);
+        const rating = getRating(score);
 
         allHours.push({ hour, label: `${hour}:00`, waveHeight, score, rating, windCond });
     }
