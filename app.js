@@ -711,15 +711,24 @@ function formatSunTime(isoString) {
 // Surf Condition Scoring
 // ========================================
 function calculateWaveScore(waveHeight, wavePeriod, waveDirection, spotFacing) {
+    // SIMPLE SCORING: Wave height is everything when waves are small
+    // No surfing without waves = no points
+
+    if (waveHeight < 0.3) {
+        // Flat - absolutely no surfing possible
+        return 0;
+    }
+
+    if (waveHeight < 0.5) {
+        // Barely any waves - longboard only, max 15 points
+        return Math.min(15, Math.round(waveHeight * 30));
+    }
+
+    // Only calculate full score when waves are surfable (0.5m+)
     let score = 0;
 
-    // Wave height is PRIMARY factor (0-50 points)
-    // Stricter scoring - small waves = low score
-    if (waveHeight < 0.3) {
-        score += 0;  // Flat - not surfable
-    } else if (waveHeight < 0.5) {
-        score += 10; // Barely surfable, longboard only
-    } else if (waveHeight < 0.8) {
+    // Wave height (0-50 points)
+    if (waveHeight < 0.8) {
         score += 25; // Small but fun
     } else if (waveHeight < 1.2) {
         score += 40; // Good size
@@ -733,33 +742,21 @@ function calculateWaveScore(waveHeight, wavePeriod, waveDirection, spotFacing) {
         score += 10; // Dangerous
     }
 
-    // Bonus multiplier based on wave height - small waves get reduced bonuses
-    let bonusMultiplier;
-    if (waveHeight < 0.3) {
-        bonusMultiplier = 0.2;  // Almost no bonus for flat
-    } else if (waveHeight < 0.5) {
-        bonusMultiplier = 0.3;  // Minimal bonus for tiny waves
-    } else if (waveHeight < 0.8) {
-        bonusMultiplier = 0.6;  // Reduced bonus for small waves
-    } else {
-        bonusMultiplier = 1.0;  // Full bonus for good size
-    }
+    // Period bonus (0-25 points) - only for surfable waves
+    if (wavePeriod >= 12) score += 25;
+    else if (wavePeriod >= 10) score += 20;
+    else if (wavePeriod >= 8) score += 15;
+    else if (wavePeriod >= 6) score += 10;
+    else score += 5;
 
-    // Period bonus (0-25 points) - scaled by wave height
-    if (wavePeriod >= 12) score += Math.round(25 * bonusMultiplier);
-    else if (wavePeriod >= 10) score += Math.round(20 * bonusMultiplier);
-    else if (wavePeriod >= 8) score += Math.round(15 * bonusMultiplier);
-    else if (wavePeriod >= 6) score += Math.round(10 * bonusMultiplier);
-    else score += Math.round(5 * bonusMultiplier);
-
-    // Direction bonus (0-25 points) - scaled by wave height
+    // Direction bonus (0-25 points) - only for surfable waves
     if (waveDirection !== null && !isNaN(waveDirection)) {
         const angleDiff = Math.abs(waveDirection - spotFacing);
         const normalizedDiff = angleDiff > 180 ? 360 - angleDiff : angleDiff;
-        if (normalizedDiff <= 30) score += Math.round(25 * bonusMultiplier);
-        else if (normalizedDiff <= 60) score += Math.round(18 * bonusMultiplier);
-        else if (normalizedDiff <= 90) score += Math.round(10 * bonusMultiplier);
-        else score += Math.round(5 * bonusMultiplier);
+        if (normalizedDiff <= 30) score += 25;
+        else if (normalizedDiff <= 60) score += 18;
+        else if (normalizedDiff <= 90) score += 10;
+        else score += 5;
     }
 
     return Math.min(100, Math.round(score));

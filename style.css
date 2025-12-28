@@ -1946,7 +1946,9 @@ section h2 {
     padding: 8px 16px;
 }
 
-.donate-description {
+.footer .donate-description,
+.donate-banner .donate-description,
+p.donate-description {
     font-size: 0.7rem;
     color: #ffffff !important;
     max-width: 350px;
