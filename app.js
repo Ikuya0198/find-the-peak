@@ -1344,6 +1344,39 @@ function toggleLanguage() {
     }
 }
 
+// ========================================
+// Easter Egg: Surfer Animation
+// ========================================
+function spawnSurfer() {
+    const surfers = [
+        '\uD83C\uDFC4',           // 🏄
+        '\uD83C\uDFC4\u200D\u2642\uFE0F', // 🏄‍♂️
+        '\uD83C\uDFC4\u200D\u2640\uFE0F', // 🏄‍♀️
+    ];
+
+    const surfer = document.createElement('div');
+    surfer.className = 'surfer-animation' + (Math.random() > 0.5 ? ' reverse' : '');
+    surfer.textContent = surfers[Math.floor(Math.random() * surfers.length)];
+    surfer.style.bottom = (15 + Math.random() * 40) + '%';
+
+    document.body.appendChild(surfer);
+
+    // Remove after animation completes
+    setTimeout(() => surfer.remove(), 9000);
+}
+
+function startSurferEasterEgg() {
+    // First surfer after 10-30 seconds
+    setTimeout(spawnSurfer, 10000 + Math.random() * 20000);
+
+    // Then randomly every 45-120 seconds
+    setInterval(() => {
+        if (Math.random() > 0.3) { // 70% chance each interval
+            spawnSurfer();
+        }
+    }, 45000 + Math.random() * 75000);
+}
+
 async function init() {
     document.getElementById('langToggle').addEventListener('click', toggleLanguage);
     document.getElementById('refreshBtn').addEventListener('click', () => selectSpot(currentSpot));
@@ -1352,6 +1385,9 @@ async function init() {
     await selectSpot(currentSpot);
 
     setInterval(() => selectSpot(currentSpot), 15 * 60 * 1000);
+
+    // Start easter egg
+    startSurferEasterEgg();
 }
 
 document.addEventListener('DOMContentLoaded', init);
