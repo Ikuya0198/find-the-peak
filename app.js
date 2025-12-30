@@ -14,7 +14,7 @@ const translations = {
         tomorrowForecast: "Tomorrow's Forecast",
         weeklyForecast: 'Weekly Forecast',
         selectSpot: 'Select Surf Spot',
-        selectDesc: 'Choose from 14 popular spots in Japan. More countries coming soon!',
+        selectDesc: 'Choose from 18 popular spots in Japan. More countries coming soon!',
         waveHeight: 'Wave',
         waveNote: '* Beach breaks are typically 20-30% bigger than shown',
         todayHourly: "Today's Hourly",
@@ -101,7 +101,7 @@ const translations = {
         tomorrowForecast: '明日の予報',
         weeklyForecast: '週間予報',
         selectSpot: 'サーフスポットを選択',
-        selectDesc: '日本の人気14スポットから選んでください。他の国も近日追加予定！',
+        selectDesc: '日本の人気18スポットから選んでください。他の国も近日追加予定！',
         waveHeight: '波高',
         waveNote: '※ビーチブレイクでは実際の波は表示より2〜3割大きくなります',
         todayHourly: '今日の時間別',
@@ -201,6 +201,7 @@ const COUNTRIES = {
                 name: { en: 'Shonan', ja: '湘南' },
                 spots: [
                     { id: 'kugenuma', name: { en: 'Kugenuma', ja: '鵠沼' }, lat: 35.3167, lon: 139.4667, facing: 180 },
+                    { id: 'tsujido', name: { en: 'Tsujido', ja: '辻堂' }, lat: 35.3233, lon: 139.4483, facing: 180 },
                     { id: 'chigasaki', name: { en: 'Chigasaki', ja: '茅ヶ崎' }, lat: 35.3167, lon: 139.4000, facing: 180 },
                     { id: 'kamakura', name: { en: 'Kamakura', ja: '鎌倉' }, lat: 35.3083, lon: 139.5333, facing: 180 }
                 ]
@@ -211,6 +212,14 @@ const COUNTRIES = {
                     { id: 'ichinomiya', name: { en: 'Ichinomiya', ja: '一宮' }, lat: 35.3833, lon: 140.3833, facing: 90 },
                     { id: 'katagai', name: { en: 'Katagai', ja: '片貝' }, lat: 35.4333, lon: 140.4167, facing: 90 },
                     { id: 'kujukuri', name: { en: 'Kujukuri', ja: '九十九里' }, lat: 35.5000, lon: 140.4333, facing: 90 }
+                ]
+            },
+            minamichiba: {
+                name: { en: 'South Chiba', ja: '南千葉' },
+                spots: [
+                    { id: 'kamogawa', name: { en: 'Kamogawa', ja: '鴨川' }, lat: 35.1000, lon: 140.1000, facing: 135 },
+                    { id: 'wada', name: { en: 'Wada', ja: '和田' }, lat: 34.9833, lon: 140.0167, facing: 135 },
+                    { id: 'chikura', name: { en: 'Chikura', ja: '千倉' }, lat: 34.9333, lon: 139.9500, facing: 180 }
                 ]
             },
             izu: {
